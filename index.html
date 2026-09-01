@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nanoparticle Metrology Lab — TU/e Applied Physics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..800,0..100;1,9..144,400..800,0..100&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  .technique-figure {
+  background: var(--paper);
+  padding: 8px;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.technique-figure:hover {
+  transform: translateY(-4px);
+}
+
+/* Ensure images don't look weird on mobile */
+@media (max-width: 640px) {
+  .technique-figure {
+    float: none !important;
+    width: 100% !important;
+    margin: 0 0 24px 0 !important;
+  }
+}
+  :root {
+    --cream: #FAF4ED;
+    --cream-deep: #F2E9DA;
+    --paper: #FFFCF7;
+    --ink: #2A1F1A;
+    --ink-soft: #6B5B52;
+    --ink-faint: #B5A89E;
+    --rose: #D14856;
+    --rose-deep: #B83B47;
+    --rose-soft: #FBD8DC;
+    --rose-mist: #FDEDEF;
+    --teal: #1F7A85;
+    --teal-mist: #DCE9E6;
+    --shadow-soft: 0 1px 2px rgba(42,31,26,0.04), 0 8px 24px rgba(42,31,26,0.06);
+    --shadow-lift: 0 2px 4px rgba(42,31,26,0.06), 0 16px 40px rgba(42,31,26,0.08);
+    --maxw: 1100px;
+    --readw: 100%;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.65;
+    font-size: 17px;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at top, rgba(255,252,247,0.6) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 90%, rgba(251,216,220,0.18) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    opacity: 0.4; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.16, 0 0 0 0 0.12, 0 0 0 0 0.10, 0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+  body > * { position: relative; z-index: 1; }
+
+  ::selection { background: var(--rose-soft); color: var(--ink); }
+
+  a { color: var(--rose); text-decoration: none; transition: color 0.15s ease; }
+  a:hover { color: var(--rose-deep); }
+
+  /* ============ NAV ============ */
+  nav.topnav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(250, 244, 237, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .nav-inner {
+    max-width: var(--maxw); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px; gap: 32px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; user-select: none;
+  }
+  .brand img { width: 32px; height: auto; opacity: 0.9; }
+  .brand-text {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 14, 'SOFT' 100;
+    font-weight: 600; font-size: 16px;
+    line-height: 1; color: var(--ink);
+  }
+  .brand-text small {
+    display: block; font-family: 'Inter', sans-serif;
+    font-weight: 500; font-size: 10.5px;
+    color: var(--ink-soft); letter-spacing: 0.12em; text-transform: uppercase;
+    margin-top: 4px;
+  }
+  ul.navlinks {
+    display: flex; gap: 4px; list-style: none; flex-wrap: wrap;
+  }
+  ul.navlinks a {
+    display: block; padding: 8px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px; font-weight: 500;
+    color: var(--ink-soft);
+    transition: color 0.15s ease;
+    position: relative;
+  }
+  ul.navlinks a:hover { color: var(--ink); }
+  ul.navlinks a.active {
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 16px;
+    font-variation-settings: 'opsz' 14, 'SOFT' 100;
+  }
+  ul.navlinks a.active::after {
+    content: ""; position: absolute;
+    left: 14px; right: 14px; bottom: 4px;
+    height: 2px; background: var(--rose); border-radius: 2px;
+  }
+
+  /* Mobile Navigation */
+  .menu-toggle {
+    display: none;
+    background: none; border: none;
+    color: var(--ink); cursor: pointer;
+    padding: 6px; margin: -6px;
+  }
+  @media (max-width: 768px) {
+    .nav-inner { flex-wrap: wrap; padding: 16px 24px; }
+    .menu-toggle { display: block; }
+    ul.navlinks {
+      display: none;
+      width: 100%; flex-direction: column;
+      gap: 4px; margin-top: 16px; padding-top: 16px;
+      border-top: 1px solid rgba(42,31,26,0.08);
+    }
+    ul.navlinks.open { display: flex; }
+    ul.navlinks a { padding: 12px 14px; }
+  }
+
+  /* ============ LAYOUT ============ */
+  main { max-width: var(--maxw); margin: 0 auto; padding: 56px 32px 80px; }
+  @media (max-width: 640px) { main { padding: 32px 22px 64px; } }
+
+  .page { display: none; animation: fadein 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .page.active { display: block; }
+  @keyframes fadein {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ============ TYPOGRAPHY HELPERS ============ */
+  .eyebrow {
+    display: flex; align-items: center; gap: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px; font-weight: 600;
+    color: var(--rose); text-transform: uppercase;
+    letter-spacing: 0.16em; margin-bottom: 28px;
+  }
+  .eyebrow::before {
+    content: ""; width: 8px; height: 8px;
+    background: var(--rose); border-radius: 50%; flex-shrink: 0;
+  }
+  .eyebrow::after {
+    content: ""; flex: 1; height: 1px; background: var(--ink-faint); max-width: 80px;
+  }
+
+  h1.title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    font-weight: 600;
+    font-size: clamp(44px, 6.5vw, 76px);
+    line-height: 0.96; letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 24px;
+    max-width: 100%;
+  }
+  h1.title em {
+    font-style: italic; color: var(--rose);
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  }
+
+  .lead {
+    font-family: 'Inter', sans-serif;
+    font-size: 19px; line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: var(--readw);
+    margin-bottom: 56px;
+  }
+
+  h2.section {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    font-weight: 600; font-size: 36px;
+    line-height: 1.1; letter-spacing: -0.015em;
+    margin: 80px 0 28px;
+  }
+  h2.section em { font-style: italic; color: var(--rose); }
+
+  p { margin-bottom: 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  .dropcap::first-letter {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    font-weight: 600;
+    font-size: 5.4em;
+    float: left;
+    line-height: 0.85;
+    padding: 6px 12px 0 0;
+    color: var(--rose);
+  }
+
+  .ornament {
+    text-align: center; margin: 80px 0;
+    color: var(--ink-faint); letter-spacing: 1.2em;
+    font-size: 16px; user-select: none;
+  }
+  .ornament span { color: var(--rose); }
+
+  /* ============ HOME ============ */
+  .hero-spread {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: end;
+    margin: 16px 0 64px;
+  }
+  @media (max-width: 820px) {
+    .hero-spread { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  .hero-headline {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    font-weight: 500;
+    font-size: clamp(46px, 7vw, 84px);
+    line-height: 0.96;
+    letter-spacing: -0.028em;
+    color: var(--ink);
+  }
+  .hero-headline em {
+    font-style: italic; color: var(--rose);
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    font-weight: 500;
+  }
+
+  .hero-img-wrap {
+    transform: rotate(-1.4deg);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    margin-bottom: 12px;
+  }
+  .hero-img-wrap:hover { transform: rotate(0deg) scale(1.01); }
+  .hero-img-wrap img {
+    width: 100%; display: block;
+    border-radius: 14px;
+    box-shadow: var(--shadow-lift);
+    border: 6px solid var(--paper);
+  }
+  .hero-caption {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-variation-settings: 'opsz' 14, 'SOFT' 100;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    margin-top: 14px;
+    text-align: right; padding-right: 8px;
+  }
+
+  .home-intro {
+    max-width: var(--readw);
+    margin: 64px 0 80px;
+  }
+  .home-intro p { font-size: 19px; line-height: 1.7; color: var(--ink); }
+  .home-intro p + p { color: var(--ink-soft); font-size: 17.5px; }
+
+  .explore { margin: 64px 0 80px; }
+  .explore-list { display: grid; gap: 0; list-style: none; }
+  .explore-item {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 32px; align-items: baseline;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--cream-deep);
+    cursor: pointer;
+    transition: padding 0.2s ease;
+  }
+  .explore-item:first-child { border-top: 1px solid var(--cream-deep); }
+  .explore-item:hover { padding-left: 8px; }
+  .explore-item:hover h3 { color: var(--rose); }
+  .explore-num {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-variation-settings: 'opsz' 36, 'SOFT' 100;
+    font-size: 22px; color: var(--rose);
+    font-weight: 500;
+  }
+  .explore-body h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 80;
+    font-size: 24px; font-weight: 600;
+    margin-bottom: 6px; color: var(--ink);
+    transition: color 0.15s ease;
+    line-height: 1.2;
+  }
+  .explore-body p {
+    font-size: 15px; color: var(--ink-soft);
+    margin: 0; max-width: 100%;
+  }
+  .explore-arrow {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 20px; color: var(--rose);
+    align-self: center;
+  }
+  @media (max-width: 600px) {
+    .explore-item { grid-template-columns: 36px 1fr; gap: 16px; }
+    .explore-arrow { display: none; }
+  }
+
+  .recent-list { display: grid; gap: 32px; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 720px) { .recent-list { grid-template-columns: 1fr; } }
+  .recent-item .date {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--rose);
+    margin-bottom: 8px;
+  }
+  .recent-item h4 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 80;
+    font-size: 21px; font-weight: 600; line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .recent-item p {
+    font-size: 15px; color: var(--ink-soft); line-height: 1.55;
+  }
+
+  .mbx-block {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 48px; align-items: center;
+    margin: 96px 0 32px;
+    padding: 40px;
+    background: var(--paper);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+  }
+  @media (max-width: 720px) {
+    .mbx-block { grid-template-columns: 1fr; gap: 28px; padding: 28px; }
+  }
+  .mbx-block img {
+    width: 100%; display: block;
+    border-radius: 12px;
+  }
+  .mbx-block h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 80;
+    font-size: 28px; font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .mbx-block h3 em { font-style: italic; color: var(--rose); }
+  .mbx-block p {
+    font-size: 15.5px; color: var(--ink-soft); line-height: 1.65;
+  }
+
+  /* ============ RESEARCH ============ */
+  .theme {
+    padding: 56px 0;
+    border-bottom: 1px solid var(--cream-deep);
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 56px;
+  }
+  .theme:last-child { border-bottom: none; }
+  @media (max-width: 800px) {
+    .theme { grid-template-columns: 1fr; gap: 16px; padding: 40px 0; }
+  }
+  .theme-marker {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-variation-settings: 'opsz' 14, 'SOFT' 100;
+    color: var(--rose); font-size: 14px; font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .theme h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    font-weight: 600; font-size: 32px;
+    line-height: 1.1; letter-spacing: -0.015em;
+    margin-top: 8px;
+  }
+  .theme-body p {
+    font-size: 17px; line-height: 1.7;
+  }
+  .theme-body p + p { margin-top: 16px; }
+  .theme-body .pullquote {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    font-size: 22px; line-height: 1.4;
+    color: var(--rose-deep);
+    border-left: 2px solid var(--rose);
+    padding: 4px 0 4px 20px;
+    margin: 24px 0;
+    max-width: 100%;
+  }
+
+  /* ============ TECHNIQUES ============ */
+  .technique {
+    margin: 56px 0;
+    max-width: var(--readw);
+  }
+  .technique h2 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    font-weight: 600; font-size: 32px;
+    line-height: 1.15; letter-spacing: -0.015em;
+    margin-bottom: 8px;
+  }
+  .technique .technique-sub {
+    font-family: 'Fraunces', serif; font-style: italic;
+    color: var(--rose); font-size: 16px;
+    margin-bottom: 18px;
+  }
+  .technique p { font-size: 16.5px; line-height: 1.7; }
+
+  .measures-list {
+    list-style: none; padding: 0; margin: 24px 0 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--cream-deep);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  @media (max-width: 600px) { .measures-list { grid-template-columns: 1fr; } }
+  .measures-list li {
+    background: var(--paper);
+    padding: 20px 22px;
+    font-size: 15px; line-height: 1.5;
+  }
+  .measures-list strong {
+    display: block; font-weight: 600;
+    color: var(--ink); margin-bottom: 4px;
+    font-size: 15.5px;
+  }
+  .measures-list span { color: var(--ink-soft); }
+
+  .tools-section { margin: 80px 0 40px; }
+  .tools-intro {
+    max-width: var(--readw);
+    color: var(--ink-soft); font-size: 16px;
+    margin-bottom: 28px; line-height: 1.65;
+  }
+  .tools-grid {
+    display: grid; gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 640px) { .tools-grid { grid-template-columns: 1fr; } }
+  .tool {
+    padding: 20px 22px;
+    background: var(--paper);
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: block;
+    color: var(--ink);
+  }
+  .tool:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
+    color: var(--ink);
+  }
+  .tool .tool-name {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 80;
+    font-weight: 600; font-size: 19px;
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+  .tool .tool-name::after {
+    content: " ↗";
+    font-family: 'Inter', sans-serif;
+    color: var(--rose);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .tool:hover .tool-name::after { opacity: 1; }
+  .tool .tool-desc {
+    font-size: 13.5px; color: var(--ink-soft); line-height: 1.55;
+  }
+
+  .collab {
+    margin-top: 64px;
+    padding: 40px 48px;
+    background: var(--rose-mist);
+    border-radius: 16px;
+    max-width: var(--readw);
+  }
+  .collab h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 100;
+    font-style: italic;
+    font-weight: 500; font-size: 26px;
+    margin-bottom: 12px; color: var(--rose-deep);
+  }
+  .collab p { font-size: 16px; line-height: 1.65; }
+  .collab a { color: var(--rose-deep); border-bottom: 1px solid var(--rose); }
+
+  /* ============ PUBLICATIONS ============ */
+  .scholar-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 100;
+    font-style: italic; font-weight: 500;
+    font-size: 19px;
+    color: var(--rose);
+    border-bottom: 2px solid var(--rose);
+    padding-bottom: 4px;
+    margin-bottom: 56px;
+  }
+  .scholar-link:hover { color: var(--rose-deep); border-color: var(--rose-deep); }
+
+  .filters {
+    display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 40px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+  }
+  .filter {
+    color: var(--ink-soft); cursor: pointer;
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s ease;
+  }
+  .filter:hover { color: var(--ink); }
+  .filter.active {
+    color: var(--rose); font-weight: 600;
+    border-bottom-color: var(--rose);
+  }
+
+  .pub-list { list-style: none; padding: 0; }
+  .pub {
+    display: grid; grid-template-columns: 88px 1fr;
+    gap: 32px; align-items: baseline;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--cream-deep);
+  }
+  @media (max-width: 600px) {
+    .pub { grid-template-columns: 1fr; gap: 8px; padding: 24px 0; }
+  }
+  .pub .year {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    font-weight: 500; font-style: italic;
+    font-size: 36px; color: var(--rose);
+    line-height: 1; letter-spacing: -0.02em;
+  }
+  .pub .pub-title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 80;
+    font-weight: 600; font-size: 19px;
+    line-height: 1.3; margin-bottom: 6px;
+  }
+  .pub .pub-authors {
+    font-size: 14.5px; color: var(--ink-soft); margin-bottom: 4px;
+  }
+  .pub .pub-authors b { color: var(--ink); font-weight: 600; }
+  .pub .pub-journal {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 14.5px; color: var(--ink-soft); margin-bottom: 10px;
+  }
+  .pub .pub-links {
+    display: flex; gap: 18px;
+    font-size: 13px; font-weight: 500;
+  }
+  .pub .pub-links a { color: var(--rose); }
+  .pub .pub-links a:hover { color: var(--rose-deep); }
+
+  /* ============ MEMBERS ============ */
+  .group-photo-card {
+    margin-bottom: 64px;
+    background: var(--paper);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+  }
+  .ph-stub {
+    aspect-ratio: 16 / 7;
+    background:
+      linear-gradient(135deg, var(--rose-mist) 0%, var(--cream-deep) 60%, var(--teal-mist) 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft); font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 16px; padding: 24px;
+  }
+  .ph-stub::before {
+    content: "♦"; color: var(--rose); margin-right: 12px;
+    font-style: normal;
+  }
+  .group-photo-card figcaption {
+    padding: 16px 24px;
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 14px; color: var(--ink-soft);
+  }
+
+  .pi-card {
+    display: grid; grid-template-columns: 200px 1fr;
+    gap: 40px; align-items: start;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--cream-deep);
+  }
+  @media (max-width: 720px) {
+    .pi-card { grid-template-columns: 1fr; gap: 24px; }
+  }
+  .portrait-stub {
+    position: relative; /* Add this */
+    z-index: 10;        /* Add this */
+    aspect-ratio: 1;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rose-soft), var(--rose-mist));
+    display: flex; align-items: center; justify-content: center;
+    color: var(--rose-deep); font-family: 'Fraunces', serif;
+    font-size: 13px; font-style: italic;
+    text-align: center; padding: 12px;
+    image-rendering: -webkit-optimize-contrast; /* Best for Chrome/Safari */
+    image-rendering: high-quality;
+  
+    /* This prevents the "ghosting" artifacts during the shrink */
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+  .pi-card h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    font-weight: 600; font-size: 38px;
+    line-height: 1.05; letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .pi-card .role {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-variation-settings: 'opsz' 14, 'SOFT' 100;
+    font-size: 16px; color: var(--rose);
+    margin-bottom: 22px;
+  }
+  .pi-card p { font-size: 16.5px; line-height: 1.7; }
+  .links-row {
+    margin-top: 20px;
+    display: flex; flex-wrap: wrap; gap: 18px;
+    font-size: 14px;
+  }
+  .links-row a {
+    color: var(--rose);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+  }
+  .links-row a:hover { border-color: var(--rose); }
+
+  .role-section { margin: 64px 0 0; }
+  .role-section h2.section { margin-top: 0; }
+  
+  .members-list {
+    display: grid; gap: 0; grid-template-columns: 1fr;
+  }
+  .member-card {
+    display: grid; grid-template-columns: 120px 1fr; gap: 32px;
+    align-items: start;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--cream-deep);
+  }
+  .member-card:last-child { border-bottom: none; }
+  @media (max-width: 640px) { 
+    .member-card { grid-template-columns: 80px 1fr; gap: 20px; padding: 24px 0; } 
+  }
+  .member-card .portrait-stub { padding: 0; font-size: 11px; }
+  .member-header {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .member-card h4 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 36, 'SOFT' 80;
+    font-size: 22px; font-weight: 600;
+    margin: 0;
+  }
+  .member-card .role-inline {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 16px; color: var(--rose);
+  }
+  .member-card p { font-size: 15.5px; line-height: 1.65; color: var(--ink-soft); margin: 0; }
+
+  .alumni-list { list-style: none; padding: 0; }
+  .alumni-list li {
+    padding: 16px 0;
+    border-bottom: 1px dotted var(--ink-faint);
+    font-size: 15.5px; color: var(--ink-soft);
+    display: grid; grid-template-columns: 70px 1fr; gap: 20px;
+    align-items: baseline;
+  }
+  .alumni-list li:last-child { border-bottom: none; }
+  .alumni-list .year {
+    font-family: 'Fraunces', serif; font-style: italic;
+    color: var(--rose); font-weight: 500; font-size: 16px;
+  }
+
+  /* ============ NEWS ============ */
+  .news-feed { list-style: none; padding: 0; }
+  .news-item {
+    padding: 36px 0;
+    border-bottom: 1px solid var(--cream-deep);
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 32px;
+    align-items: baseline;
+  }
+  @media (max-width: 640px) {
+    .news-item { grid-template-columns: 1fr; gap: 8px; padding: 28px 0; }
+  }
+  .news-item .news-date {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-variation-settings: 'opsz' 36, 'SOFT' 100;
+    font-size: 18px; color: var(--rose);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .news-item .news-tag {
+    display: inline-block; font-family: 'Inter', sans-serif;
+    font-size: 11px; font-weight: 600;
+    color: var(--ink-soft); text-transform: uppercase;
+    letter-spacing: 0.12em; margin-top: 6px;
+  }
+  .news-item h3 {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 80;
+    font-size: 26px; font-weight: 600;
+    line-height: 1.2; letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .news-item p {
+    font-size: 16px; line-height: 1.65; color: var(--ink-soft);
+  }
+
+  /* ============ CONTACT ============ */
+  .contact-spread {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    margin-top: 32px;
+  }
+  @media (max-width: 720px) {
+    .contact-spread { grid-template-columns: 1fr; gap: 40px; }
+  }
+  .contact-block { margin-bottom: 40px; }
+  .contact-block .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; font-weight: 600;
+    color: var(--rose); text-transform: uppercase;
+    letter-spacing: 0.16em; margin-bottom: 12px;
+  }
+  .contact-block .body {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 14, 'SOFT' 100;
+    font-size: 18px; line-height: 1.6; color: var(--ink);
+  }
+  .contact-block .body a { color: var(--rose); }
+
+  /* ============ FOOTER ============ */
+  footer {
+    margin-top: 96px;
+    padding: 48px 32px 56px;
+    background: var(--cream-deep);
+  }
+  .footer-inner {
+    max-width: var(--maxw); margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 28px; flex-wrap: wrap;
+  }
+  .footer-left {
+    font-family: 'Fraunces', serif; font-style: italic;
+    color: var(--ink-soft); font-size: 14.5px;
+  }
+  .footer-funding {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px; font-weight: 600;
+    color: var(--ink-soft); letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .footer-funding span { padding: 4px 0; }
+
+  .placeholder-banner {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 14.5px; color: var(--rose-deep);
+    background: var(--rose-mist);
+    padding: 14px 22px; border-radius: 8px;
+    margin: 16px 0 28px;
+  }
+  .placeholder-banner::before {
+    content: "Note: ";
+    font-style: normal; font-weight: 600;
+  }
+
+/* Styling for the new research images */
+.theme-image {
+  margin-top: 20px;
+  transform: rotate(-1deg); /* Subtle tilt to match your site's aesthetic */
+  transition: transform 0.3s ease;
+}
+
+.theme-image:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.theme-image img {
+  width: 100%;
+  max-width: 400px; /* Adjust based on your image sizes */
+  display: block;
+  border-radius: 12px;
+  border: 4px solid var(--paper);
+  box-shadow: var(--shadow-soft);
+  background: var(--cream-deep); /* Placeholder color while loading */
+}
+
+/* Ensure images stack properly on mobile */
+@media (max-width: 800px) {
+  .theme-image {
+    margin-bottom: 24px;
+    transform: none;
+    max-width: 100%;
+  }
+  .theme-image img {
+    max-width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="nav-inner">
+    <div class="brand" data-page="home">
+      <!-- Replaced the broken __LOGO__ base64 with a simple SVG graphic -->
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23D14856'><circle cx='12' cy='12' r='10'/></svg>" alt="Logo">
+      <div class="brand-text">
+        Nanoparticle Metrology Lab
+        <small>TU/e · MBx</small>
+      </div>
+    </div>
+    <button class="menu-toggle" aria-label="Toggle navigation">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    <ul class="navlinks">
+      <li><a href="#" data-page="home" class="active">Home</a></li>
+      <li><a href="#" data-page="research">Research</a></li>
+      <li><a href="#" data-page="techniques">Techniques</a></li>
+      <li><a href="#" data-page="publications">Publications</a></li>
+      <li><a href="#" data-page="members">Members</a></li>
+      <li><a href="#" data-page="news">News</a></li>
+      <li><a href="#" data-page="contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ HOME ============ -->
+<section id="home" class="page active">
+
+  <div class="eyebrow">Single-particle metrology · TU/e Applied Physics</div>
+
+  <div class="hero-spread">
+    <h1 class="hero-headline">
+      We measure complex nanoparticle populations <em>one&nbsp;particle at a time.</em>
+    </h1>
+    <div class="hero-img-wrap">
+      <!-- Example Image added here -->
+      <img src="images/Lab_logo.png" alt="Single-particle measurement: a nanoparticle annotated with size, refractive index, charge, fluorescence, and other measurable properties">
+      <div class="hero-caption">— a single particle, fully described</div>
+    </div>
+  </div>
+
+  <div class="home-intro">
+    <p class="dropcap">The Nanoparticle Metrology Lab develops single-particle measurement tools for biological and industrial nanoparticles. Where standard methods average over billions of particles and wash out the differences between them, we measure each particle individually and reconstruct the full population from those individual measurements.</p>
+    <p>Our platform combines interferometric scattering microscopy, single-molecule fluorescence, microfluidics, and machine learning to profile thousands of particles across multiple physical parameters. We apply this multiparametric profiling to extracellular vesicles, viruses, and lipid nanoparticles, revealing new insights into their heterogeneity and potential for diagnostics and therapeutics.</p>
+  </div>
+
+  <div class="ornament"><span>·</span> <span>·</span> <span>·</span></div>
+
+  <div class="explore">
+    <h2 class="section">Continue <em>—</em></h2>
+    <ol class="explore-list">
+      <li class="explore-item" data-page="research">
+        <span class="explore-num">01</span>
+        <div class="explore-body">
+          <h3>Research</h3>
+          <p>Nanoparticles and the multiparametric heterogeneity that bulk methods miss.</p>
+        </div>
+        <span class="explore-arrow">→</span>
+      </li>
+      <li class="explore-item" data-page="techniques">
+        <span class="explore-num">02</span>
+        <div class="explore-body">
+          <h3>Techniques</h3>
+          <p>Interferometric scattering microscopy, iNTA, mass photometry, and the open-source software behind them.</p>
+        </div>
+        <span class="explore-arrow">→</span>
+      </li>
+      <li class="explore-item" data-page="members">
+        <span class="explore-num">03</span>
+        <div class="explore-body">
+          <h3>Members</h3>
+          <p>The people behind the work.</p>
+        </div>
+        <span class="explore-arrow">→</span>
+      </li>
+    </ol>
+  </div>
+
+  <h2 class="section">Lately <em>—</em></h2>
+  <!-- Add the id "lately-container" here -->
+  <div class="recent-list" id="lately-container">
+    <!-- Content will be injected here automatically -->
+  </div>
+
+  <div class="mbx-block">
+    <!-- Example Image added here -->
+    <img src="images/MBX_image_pink.png" alt="MBx group illustration: a microscope objective imaging vesicles, bacteria, and lipoproteins above a tissue surface">
+    <div>
+      <h3>We are part of <a href="https://www.tue.nl/en/research/research-groups/molecular-biosensing" target="_blank"><em>MBx</em></a></h3>
+      <p>The Molecular Biosensing group at the Department of Applied Physics develops measurement methods for molecules and particles in biological samples, with applications across diagnostics, drug delivery, and basic biology. </p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ============ RESEARCH ============ -->
+<section id="research" class="page">
+  <div class="eyebrow">Research</div>
+  <h1 class="title">What we <em>work&nbsp;on</em>.</h1>
+  <p class="lead">
+    The Research page is organised around the scientific questions we pursue. For the methods themselves, see <a href="#" data-page="techniques">Techniques</a>.
+  </p>
+
+<div class="theme">
+    <div>
+      <div class="theme-marker">— the premise</div>
+      <h2>Multiparametric heterogeneity</h2>
+
+      <div class="theme-image">
+        <img src="images/Heterogeneity.png" alt="Visual representation of nanoparticle heterogeneity">
+      </div>
+    </div>
+    <div class="theme-body">
+      <p>Biological nanoparticles, such as extracellular vesicles, viruses, and lipid carriers, are fundamentally non-uniform. Even in a purified sample, particles vary in size, membrane composition, cargo loading, and surface charge. Standard bulk techniques like DLS or Western blots provide an "ensemble average" that masks this complexity.</p>
+      <p class="pullquote">The most biologically significant or diagnostically relevant particles are often outliers, completely obscured by the population average.</p>
+      <p>Our platform shifts the focus from the population to the individual. By correlating multiple physical properties for every particle across a library of thousands, we resolve distinct subpopulations. This multiparametric approach allows us to see distributions that single-property measurements simply cannot detect.</p>
+    </div>
+  </div>
+
+<div class="theme">
+    <div>
+      <div class="theme-marker">— application</div>
+      <h2>Extracellular vesicles for liquid biopsy</h2>
+      <div class="theme-image">
+        <img src="images/EV_LP.png" alt="A plot differentiating EVs from Lipoproteins based on size and refractive index, showing how multiparametric profiling can resolve overlapping populations">
+      </div>
+    </div>
+    <div class="theme-body">
+      <p>Tumor-derived extracellular vesicles (EVs) carry proteomic and genomic signatures of their origin, making them ideal candidates for non-invasive diagnostics. However these vesicles  are relatively rare and one needs to find them a vast background of "healthy" EVs and lipoproteins.</p>
+      <p>We characterize the joint distribution of size, refractive index, surface charge and surface markers to bypass the limitations of single-marker searches. This high-dimensional profiling allows us to identify specific disease-associated fingerprints that are lost in conventional assays.</p>
+      <p> The plot shows the iNTA measurement of EVs and lipoproteins from a patient sample, highlighting how they could be differentiated by their refractive index. You can find the paper <a href="https://doi.org/10.1002/jev2.12348" target="_blank">here</a>.</p>
+    </div>
+  </div>
+
+
+
+<div class="theme">
+    <div>
+      <div class="theme-marker">— application</div>
+      <h2>Lipid nanoparticles &amp; RNA delivery</h2>
+            <div class="theme-image">
+        <img src="images/LNPs.png" alt="A plot differentiating EVs from Lipoproteins based on size and refractive index, showing how multiparametric profiling can resolve overlapping populations">
+      </div>
+    </div>
+    <div class="theme-body">
+      <p>Lipid Nanoparticles (LNPs) are the primary vehicle for mRNA delivery, but unlike viral capsids, they are highly polymorphic. Their size, internal morphology, and encapsulation efficiency vary significantly based on the self-assembly conditions during mixing.</p>
+      <p>Quantifying the "loading state" of an LNP is notoriously difficult because size does not always correlate with cargo. We use single-particle refractive index measurements to determine the internal density of individual LNPs. This enables us to resolve the ratio of empty to loaded particles in real-time, providing a window into the stochastic nature of LNP assembly and its impact on delivery efficacy.</p>
+    </div>
+  </div>
+
+<div class="theme">
+    <div>
+      <div class="theme-marker">— direction</div>
+      <h2>From measurement to sorting</h2>
+  
+
+          <div class="theme-image">
+        <img src="images/Sort.png" alt="Visual representation of nanoparticle sorting based on real-time single-particle measurements, illustrating the concept of gating and collecting specific subpopulations for downstream analysis">
+      </div>
+      </div>
+    <div class="theme-body">
+      <p>Characterization is only the first half of the challenge. The ultimate goal is the physical isolation of the rare particles identified by our sensors. We are extending our platform to include active sorting, using real-time single-particle readouts to gate and collect specific subpopulations for downstream characterization or therapeutic use.</p>
+      <p>We are building a label-free workflow that moves from population characterization to subpopulation isolation on a single instrument.</p>
+    </div>
+  </div>
+
+</section>
+<!-- ============ TECHNIQUES ============ -->
+<section id="techniques" class="page">
+  <div class="eyebrow">Techniques</div>
+  <h1 class="title">How we <em>measure</em>.</h1>
+  <p class="lead">
+    Single-particle, label-free metrology in solution and at surfaces. Interferometric scattering is the main principle; iNTA and mass photometry are the two  implementations that we use.
+  </p>
+
+  <div class="technique">
+    <div class="technique-figure" style="float: right; width: 220px; margin-left: 32px;">
+      <img src="images/iscat-setup.png" alt="iSCAT optical principle diagram" style="width: 100%; border-radius: 8px; border: 3px solid var(--paper); box-shadow: var(--shadow-soft);">
+      <p style="font-size: 12px; font-style: italic; color: var(--ink-soft); margin-top: 8px;">— The iSCAT setup.</p>
+    </div>
+    <h2>iSCAT</h2>
+    <div class="technique-sub">— Interferometric Scattering Microscopy</div>
+    <p>Interferometric scattering microscopy is the method we use for label-free, high-sensitivity imaging. By mixing the light scattered by a nanoparticle with a reference beam reflected from the sample coverglass, iSCAT achieves the signal-to-noise ratio necessary to detect subwavelength objects. We can use iSCAT not just for tracking, but for observing single-particle binding kinetics, dynamic surface interactions, and characterising particles that are fixed or moving along a surface, as well as for imaging.</p>
+  </div>
+
+<div class="technique" style="overflow: hidden;"> <div class="technique-figure" style="float: left; width: 220px; margin-right: 32px; margin-bottom: 20px;">
+      <img src="images/inta_small.png" 
+           alt="Principle of iNTA: size is extracted from the particle's Brownian motion" 
+           loading="lazy"
+           style="width: 100%; border-radius: 8px; border: 3px solid var(--paper); box-shadow: var(--shadow-soft);">
+      <p style="font-size: 12px; font-style: italic; color: var(--ink-soft); margin-top: 8px;">
+        — iNTA particle tracking.
+      </p>
+    </div>
+
+    <h2>iNTA</h2>
+    <div class="technique-sub">— Interferometric Nanoparticle Tracking Analysis</div>
+    
+    <p>Building directly upon iSCAT, iNTA is the lab's main technique. It combines the sensitivity of interferometric scattering with high-speed tracking. As a particle diffuses freely through the imaging volume, we follow it frame by frame. From the resulting trajectory, we extract the particle's hydrodynamic size via the Stokes–Einstein relation. Simultaneously, from the iSCAT contrast of that exact same particle combined with its size, we extract its refractive index.</p>
+    
+    <p>Each particle therefore yields two correlated measurements. Subpopulations that overlap in either dimension alone often separate cleanly when both are read together.</p>
+
+    <h3 style="font-family: 'Fraunces', serif; font-size: 22px; color: var(--rose); margin: 32px 0 16px; font-variation-settings: 'opsz' 36, 'SOFT' 100; font-style: italic;">
+      What can we measure with iNTA?
+    </h3>
+
+    <ul class="measures-list">
+      <li><strong>Hydrodynamic diameter</strong><span>roughly 10 to 1000 nm</span></li>
+      <li><strong>Refractive index</strong><span>simultaneously with size, per particle</span></li>
+      <li><strong>Particle concentration</strong><span>including for individual subpopulations</span></li>
+      <li><strong>In development</strong><span>charge, additional optical contrasts, chemical specificity</span></li>
+    </ul>
+</div>
+
+  <div class="technique">
+    <h2>Mass photometry</h2>
+    <p>Mass photometry applies interferometric scattering principles to measure the molecular mass of single biomolecules, proteins, and complexes in solution. As individual molecules bind to a glass surface, they produce discrete changes in scattering contrast that are directly proportional to their mass. This provides a rapid, label-free readout of molecular weight distributions, allowing us to accurately assess sample purity, oligomeric states, and complex assembly at the single-particle level.</p>
+  </div>
+
+  <div class="technique">
+    <h2>Other techniques in the lab</h2>
+    <p>Alongside these core label-free methods, the lab uses single-molecule fluorescence microscopy and has access to an Atomic Force Microscope (AFM).</p>
+  </div>
+
+  <div class="tools-section">
+    <h2 class="section">Tools <em>we love</em></h2>
+    <p class="tools-intro">We develop and maintain our own internal analysis pipelines, but we also rely on (and recommend) several excellent open-source tools.</p>
+
+    <div class="tools-grid">
+      <a class="tool" href="https://github.com/AlexShkarin/pyLabLib" target="_blank" rel="noopener">
+        <div class="tool-name">pylablib</div>
+        <div class="tool-desc">A comprehensive Python library for instrument control. Cameras, stages, sensors.</div>
+      </a>
+      <a class="tool" href="https://github.com/AlexShkarin/pylablib-cam-control" target="_blank" rel="noopener">
+        <div class="tool-name">cam-control</div>
+        <div class="tool-desc">Real-time camera acquisition and control built on pylablib with support for many cameras.</div>
+      </a>
+      <a class="tool" href="https://github.com/SandoghdarLab/rvt" target="_blank" rel="noopener">
+        <div class="tool-name">rvt</div>
+        <div class="tool-desc">Python implementation of the Radial Variance Transform. Precise PSF localisation in various backgrounds.</div>
+      </a>
+      <a class="tool" href="https://github.com/soft-matter/trackpy" target="_blank" rel="noopener">
+        <div class="tool-name">trackpy</div>
+        <div class="tool-desc">Widely used, flexible toolkit for particle tracking in 2D and 3D, Python-based.</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="collab">
+    <h3>Collaborate with us</h3>
+    <p>We welcome collaborations, academic and industrial, where single-particle metrology can address a measurement gap. If you have a population whose heterogeneity matters and bulk methods aren't telling you enough, get in touch via the <a href="#" data-page="contact">Contact</a> page or write to Anna at <a href="mailto:a.kashkanova@tue.nl">a.kashkanova@tue.nl</a>.</p>
+  </div>
+</section>
+
+
+<!-- ============ PUBLICATIONS ============ -->
+<section id="publications" class="page">
+  <div class="eyebrow">Publications</div>
+  <h1 class="title">What we <em>write</em>.</h1>
+  <p class="lead">
+    Our publications are catalogued on Google Scholar and updated automatically. We try to keep them updated here as well. 
+  </p>
+
+  <a class="scholar-link" href="https://scholar.google.com/citations?user=GVktYB0AAAAJ&hl=en" target="_blank" rel="noopener">View on Google Scholar →</a>
+
+  <div class="filters">
+    <span class="filter active">All</span>
+    <span class="filter">iNTA</span>
+    <span class="filter">Extracellular vesicles</span>
+    <span class="filter">Methods</span>
+    <span class="filter">Optomechanics</span>
+  </div>
+
+  <!-- PASTE YOUR BIBTEX CONTENT INSIDE THIS SCRIPT TAG -->
+  <script type="text/bibtex" id="bibtex-data">
+@article{flowers2012fiber,
+  title={Fiber-cavity-based optomechanical device},
+  author={Nathan E. Flowers-Jacobs, Scott W. Hoch, Jack Sankey, Anna D. Kashkanova, Andrew Jayich, Christian Deutsch, Jakob Reichel, Jack G. E. Harris},
+  journal={Applied Physics Letters},
+  volume={101},
+  number={22},
+  year={2012},
+  publisher={AIP Publishing},
+  keywords={Optomechanics},
+  url={https://doi.org/10.1063/1.4768779}
+}
+
+@article{shkarin2014optically,
+  title={Optically mediated hybridization between two mechanical modes},
+  author={Alexey B. Shkarin, Nathan E. Flowers-Jacobs, Scott W. Hoch, Anna D. Kashkanova, Christian  Deutsch, Jakob Reichel, Jack G. E. Harris},
+  journal={Physical review letters},
+  volume={112},
+  number={1},
+  pages={013602},
+  year={2014},
+  publisher={APS},
+  keywords={Optomechanics},
+  url={https://doi.org/10.1103/PhysRevLett.112.013602}
+}
+
+@article{kashkanova2017optomechanics,
+  title={Optomechanics in superfluid helium coupled to a fiber-based cavity},
+  author={Anna D. Kashkanova, Alexey B. Shkarin, Charles D. Brown, Nathan E. Flowers-Jacobs, Lilian Childress, Scott W. Hoch, Leander Hohmann, Konstantin Ott, Jakob Reichel, Jack G. E. Harris},
+  journal={Journal of Optics},
+  volume={19},
+  number={3},
+  pages={034001},
+  year={2017},
+  publisher={IOP Publishing},
+  keywords={Optomechanics},
+  url={https://doi.org/10.1088/2040-8986/aa551e}
+}
+
+@article{kashkanova2017superfluid,
+  title={Superfluid brillouin optomechanics},
+  author={Anna D. Kashkanova, Alexey B. Shkarin, Charles D. Brown, Nathan E. Flowers-Jacobs, Lilian Childress, Scott W. Hoch, Leander Hohmann, Konstantin Ott, Jakob Reichel, Jack G. E. Harris},
+  journal={Nature Physics},
+  volume={13},
+  number={1},
+  pages={74--79},
+  year={2017},
+  publisher={Nature Publishing Group UK London},
+  keywords={Optomechanics},
+  url={https://doi.org/10.1038/nphys3900}
+}
+
+@article{childress2017cavity,
+  title={Cavity optomechanics in a levitated helium drop},
+  author={Lilian Childress, Michael P. Schmidt, Anna D. Kashkanova, Charles D. Brown, Glen I. Harris, Andrea Aiello, Florian Marquardt, Jack G. E. Harris},
+  journal={Physical Review A},
+  volume={96},
+  number={6},
+  pages={063842},
+  year={2017},
+  publisher={American Physical Society},
+  keywords={Optomechanics},
+  url={https://doi.org/10.1103/PhysRevA.96.063842}
+}
+
+@article{shkarin2019quantum,
+  title={Quantum optomechanics in a liquid},
+  author={Alexey B. Shkarin, Anna D. Kashkanova, Charles D. Brown, Samuel Garcia, Konstantin Ott, Jakob Reichel, Jack G. E. Harris},
+  journal={Physical review letters},
+  volume={122},
+  number={15},
+  pages={153601},
+  year={2019},
+  publisher={American Physical Society},
+  keywords={Optomechanics},
+  url={https://doi.org/10.1103/PhysRevLett.122.153601}
+}
+
+@article{kashkanova2021precision,
+  title={Precision single-particle localization using radial variance transform},
+  author={Anna D. Kashkanova, Alexey B. Shkarin, Reza Gholami Mahmoodabadi, Martin Blessing, Yazgan Tuna, André Gemeinhardt, Vahid Sandoghdar},
+  journal={Optics Express},
+  volume={29},
+  number={7},
+  pages={11070--11083},
+  year={2021},
+  publisher={Optical Society of America},
+  keywords={Methods},
+  url={https://doi.org/10.1364/OE.420670}
+}
+
+@article{kashkanova2022precision,
+  title={Precision size and refractive index analysis of weakly scattering nanoparticles in polydispersions},
+  author={Anna D. Kashkanova, Martin Blessing, André Gemeinhardt, Didier Soulat, Vahid Sandoghdar},
+  journal={Nature methods},
+  volume={19},
+  number={5},
+  pages={586--593},
+  year={2022},
+  publisher={Nature Publishing Group US New York},
+  keywords={iNTA, Methods},
+  url={https://doi.org/10.1038/s41592-022-01460-z}
+}
+
+@article{kashkanova2023label,
+  title={Label-free discrimination of extracellular vesicles from large lipoproteins},
+  author={Anna D. Kashkanova, Martin Blessing, Marie Reischke, Jan-Ole Baur, Andreas S. Baur, Vahid Sandoghdar, Jan Van Deun},
+  journal={Journal of Extracellular Vesicles},
+  volume={12},
+  number={8},
+  pages={12348},
+  year={2023},
+  keywords={iNTA,Extracellular vesicles},
+  url={https://doi.org/10.1002/jev2.12348}
+}
+
+@article{kuppers2023confocal,
+  title={Confocal interferometric scattering microscopy reveals 3D nanoscopic structure and dynamics in live cells},
+  author={Michelle Küppers, David Albrecht, Anna D. Kashkanova, Jennifer Lühr, Vahid Sandoghdar},
+  journal={Nature Communications},
+  volume={14},
+  number={1},
+  pages={1962},
+  year={2023},
+  publisher={Nature Publishing Group UK London},
+  keywords={iSCAT, Methods},
+  url={https://doi.org/10.1038/s41467-023-37497-7}              
+}
+
+@article{kashkanova2024measuring,
+  title={Measuring concentration of nanoparticles in polydisperse mixtures using interferometric nanoparticle tracking analysis},
+  author={Anna D. Kashkanova, David Albrecht, Michelle Küppers, Martin Blessing, Vahid Sandoghdar},
+  journal={ACS nano},
+  volume={18},
+  number={29},
+  pages={19161--19168},
+  year={2024},
+  publisher={American Chemical Society},
+  keywords={iNTA, Methods},
+  url={https://doi.org/10.1021/acsnano.4c04396}
+}
+
+
+
+@misc{sandoghdar2024method,
+  title={Method and apparatus for determining nanoparticle properties of nanoparticles in a sample},
+  author={Vahid Sandoghdar, Martin Blessing, Anna D. Kashkanova, André Gemeinhardt},
+  year={2024},
+  month=dec # "~19",
+  note={US Patent App. 18/708,291},
+  keywords={iNTA, Methods}
+}
+
+@article{tuna2025electrostatic,
+  title={Electrostatic all-passive force clamping of charged nanoparticles},
+  author={Yazgan Tuna, Amer Al-Hiyasat, Anna D. Kashkanova, Andreas Dechant, Eric Lutz, Vahid Sandoghdar},
+  journal={ACS nano},
+  volume={19},
+  number={10},
+  pages={10173--10179},
+  year={2025},
+  publisher={American Chemical Society}
+  keywords={iSCAT},
+  url={https://doi.org/0.1021/acsnano.4c17299}
+}
+
+@article{pourtalebi2026bioengineered,
+  title={Bioengineered Bacterial Vesicles and Biomimetic Hybrids Eliminate Biofilms and Balance the Gut Microbiome},
+  author={Leila Pourtalebi Jahromi, Benedikt Kronast, Jennifer Munkert, Lorenzo Sana, Marcus Koch, Heike Danzer, Sirka Dormeyer, Shuhan Jiang, Fabian Herrmann, Matthias Weiler,  Anna Kashkanova, Vahid Sandoghdar, Mario M Zaiss, Gregor Fuhrmann},
+  journal={Small},
+  volume={22},
+  number={16},
+  pages={2502551},
+  year={2026},
+  keywords={Extracellular vesicles, iNTA},
+  url={https://doi.org/10.1002/smll.202502551}
+}
+
+@article{paolini2026red,
+  title={Red blood cell-derived extracellular vesicles as biomaterials: the opportunity of freezing-induced accelerated aging},
+  author={Lucia Paolini, Miriam Romano, Valentina Mangolini, Selene Tassoni, Shuhan Jiang, Elena Laura Mazzoldi, Angelo Musicò, Andrea Zendrini, Anna D. Kashkanova, Vahid Sandoghdar,  Anna C. Berardi, Silvia Clara Giliani, Paolo Bergese, Annalisa Radeghieri},
+  journal={Biomaterials Science},
+  volume={14},
+  number={1},
+  pages={122--139},
+  year={2026},
+  publisher={Royal Society of Chemistry},
+  keywords={Extracellular vesicles, iNTA},
+  url={https://doi.org/10.1039/D5BM01349F}
+
+}
+
+@article{jiang2026characterization,
+  title={Characterization of Nanoparticles in Suspension by Simultaneous iNTA and Fluorescence Detection with Single-Molecule Sensitivity},
+  author={Shuhan Jiang, Anna D. Kashkanova, Hannarae Lee, Morgan E. C. Miller, Tobias Utikal, Alexey Shkarin, Hamed Qazvini, Vahid Sandoghdar},
+  journal={bioRxiv},
+  pages={2026--04},
+  year={2026},
+  publisher={Cold Spring Harbor Laboratory},
+  keywords={iNTA, Methods, Extracellular vesicles},
+  url={https://doi.org/10.64898/2026.04.09.717488}
+}
+  </script>
+
+  <!-- This empty list will be automatically filled by the script -->
+  <ul class="pub-list" id="dynamic-pub-list">
+  </ul>
+
+</section>
+
+
+<!-- ============ MEMBERS ============ -->
+<section id="members" class="page">
+  <div class="eyebrow">Members</div>
+  <h1 class="title">The people <em>behind the work</em>.</h1>
+
+  <!-- Replaced with a real <img> tag using placeholder URL -->
+  <figure class="group-photo-card">
+    <img src="images/Group_photo_2026.jpg" style="width:100%; aspect-ratio:16/7; object-fit:cover; display:block;" alt="Group Photo">
+    <figcaption>Nanoparticle Metrology Lab — March 2026; Left to right: Anna D. Kashkanova, Daan Linders, Hannarae Lee</figcaption>
+  </figure>
+
+  <div class="pi-card">
+    <!-- Replaced portrait stub with a real image of a person (placeholder) -->
+    <img src="images/Anna_Kashkanova.jpeg" alt="Anna Kashkanova" class="portrait-stub" style="padding: 0;">
+    <div>
+      <h3>Anna D. Kashkanova</h3>
+      <div class="role">Assistant Professor, Applied Physics &amp; Science Education, TU/e</div>
+      <p>Hi! I am Anna. I lead the Nanoparticle Metrology Lab, driven by a fascination with measuring small things precisely. My background spans quantum optomechanics at Yale, where I measured tiny vibrations in superfluid helium in the lab of Jack Harris, to developing interferometric scattering microscopy at the lab of Vahid Sandoghdar at the Max Planck Institute for the Science of Light.</p>
+      <p>I co-invented iNTA (Interferometric Nanoparticle Tracking Analysis), a technique that allows for the simultaneous measurement of size and refractive index for individual particles in solution. This work was recognised in 2025 with the Berthold Leibinger Innovation Prize. At TU/e, my group focuses on resolving the multiparametric heterogeneity of biological and industrial nanoparticles to find the "rare and interesting" particles that bulk methods miss.</p>
+      <div class="links-row">
+          <a href="https://scholar.google.com/citations?user=GVktYB0AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a>
+        <a href="https://orcid.org/0000-0001-7565-017X" target="_blank" rel="noopener">ORCID</a>
+         <a href="https://www.linkedin.com/in/anna-kashkanova-tue" target="_blank" rel="noopener">LinkedIn</a>
+       
+      </div>
+    </div>
+  </div>
+
+  <div class="role-section">
+    <h2 class="section">Lab Members</h2>
+    
+    <div class="members-list">
+      <div class="member-card">
+        <img src="images/Hannarae_Lee.jpg" alt="Jane Doe" class="portrait-stub">
+        <div>
+          <div class="member-header">
+            <h4>Hannarae Lee</h4>
+            <span class="role-inline">PhD student</span>
+          </div>
+          <p>Hi! I am Hannarae </p>
+        </div>
+      </div>
+
+
+
+      <div class="member-card">
+        <div class="portrait-stub">Photo</div>
+        <div>
+          <div class="member-header">
+            <h4>Daan Linders</h4>
+            <span class="role-inline">MSc student</span>
+          </div>
+          <p>Hi! I am Daan, a Master’s student in Applied Physics at TU/e. After completing my Bachelor’s at TU/e, I continued with the Nano, Quantum, and Photonics track, where I developed a strong interest in nanoscale physics and photonic measurement techniques.
+During my graduation project within the Nanoparticle Metrology Lab, I focus on Mass Photometry (MP). My work explores how this technique can be applied and potentially combined with plasmonics to improve the detection and analysis of individual nanoparticles.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="role-section">
+    <h2 class="section">Alumni</h2>
+    <ul class="alumni-list">
+      <li><span class="year">2026</span><span>[Name], MSc student. Now PhD candidate at [Institution].</span></li>
+      <li><span class="year">2025</span><span>[Name], MSc student. Now [position] at [Institution].</span></li>
+    </ul>
+  </div>-->
+</section> 
+
+
+<!-- ============ NEWS ============ -->
+<section id="news" class="page">
+  <div class="eyebrow">News</div>
+  <h1 class="title">Recently <em>—</em></h1>
+  <p class="lead">
+    A reverse-chronological feed. The two or three most recent entries also surface on the home page.
+  </p>
+
+  <ul class="news-feed">
+
+
+  <li class="news-item">
+      <div>
+        <div class="news-date">March 2026</div>
+        <div class="news-tag">New member</div>
+      </div>
+      <div>
+        <h3>Welcoming Daan Linders to the lab</h3>
+        <p>Daan Linders joined the lab this week as a MSc student co-supervised with Peter Zijlstra. Daan will focus on enhancing iSCAT sensitivity using plasmonic nanoparticles. Welcome!</p>
+      </div>
+    </li>
+ 
+
+    <li class="news-item">
+      <div>
+        <div class="news-date">January 2026</div>
+        <div class="news-tag">New member</div>
+      </div>
+      <div>
+        <h3>Welcoming Hannarae Lee to the lab</h3>
+        <p>Hannarae Lee joined the lab this week as a PhD student. She comes from Max Planck Institute for the Science of Light where she worked on combining iNTA with single molecule fluorescence microscopy. Hannarae will continue developing these techniques in our lab. Welcome!</p>
+      </div>
+    </li>
+
+    <li class="news-item">
+      <div>
+        <div class="news-date">November 2025</div>
+        <div class="news-tag">New lab!</div>
+      </div>
+      <div>
+        <h3>Nanoparticle Metrology Lab Opens</h3>
+        <p>The Nanoparticle Metrology Lab officially opened in November 2025 at the Molecular Bionsensing Group at Eindhoven University of Technology.</p>
+      </div>
+    </li>
+
+  </ul>
+</section>
+
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="page">
+  <div class="eyebrow">Contact</div>
+  <h1 class="title">Get in <em>touch</em>.</h1>
+
+  <div class="contact-spread">
+
+    <div>
+      <div class="contact-block">
+        <div class="label">Address</div>
+        <div class="body">
+          Nanoparticle Metrology Lab<br>
+          FLUX 4.102<br>
+          Eindhoven University of Technology<br>
+          De Groene Loper 19<br>
+          5612 AP Eindhoven, Netherlands
+        </div>
+      </div>
+
+      <div class="contact-block">
+        <div class="label">Email</div>
+        <div class="body">
+          Anna Kashkanova<br>
+          <a href="mailto:a.kashkanova@tue.nl">a.kashkanova@tue.nl</a>
+        </div>
+      </div>
+
+      <div class="contact-block">
+        <div class="label">Press &amp; social</div>
+        <div class="body">
+          For press enquiries, email Anna directly.
+          <div style="margin-top:10px; font-size:15px; color:var(--ink-soft); font-style:italic">· <a href="https://www.linkedin.com/in/anna-kashkanova-tue" target="_blank">[LinkedIn]</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="contact-block">
+        <div class="label">Prospective MSc &amp; PhD students</div>
+        <div class="body">
+          We're always glad to hear from prospective students who have engaged with the work. Include your CV and a paragraph on what you would like to work on.
+          <div style="margin-top:14px; font-size:15.5px; color:var(--ink-soft)">PhD positions are advertised through the TU/e Graduate School; for MSc projects, please write to Anna directly.</div>
+        </div>
+      </div>
+
+      <div class="contact-block">
+        <div class="label">Visiting researchers</div>
+        <div class="body">
+          The lab is on the TU/e campus, fifteen minutes by foot from Eindhoven Centraal station. 
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">© Nanoparticle Metrology Lab · TU/e Applied Physics</div>
+    <div class="footer-funding">
+      <!-- <span>NWO</span><span>·</span><span>ERC</span><span>·</span><span>MBx</span><span>·</span><span>TU/e</span> -->
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ============ CUSTOM BIBTEX PARSER ============
+  // We use a custom, lightweight parser to avoid relying on external script networks that can break.
+  function parseBibTeX(bibtexStr) {
+    const entries = [];
+    const items = bibtexStr.split(/@(?=[a-zA-Z]+[\s]*\{)/);
+    
+    for (let item of items) {
+      item = item.trim();
+      if (!item) continue;
+      
+      const typeMatch = item.match(/^([a-zA-Z]+)[\s]*\{/);
+      if (!typeMatch) continue;
+      
+      const entryType = typeMatch[1].toLowerCase();
+      const firstBrace = item.indexOf('{');
+      const lastBrace = item.lastIndexOf('}');
+      if (firstBrace === -1 || lastBrace === -1) continue;
+      
+      const inside = item.substring(firstBrace + 1, lastBrace).trim();
+      const firstComma = inside.indexOf(',');
+      if (firstComma === -1) continue;
+      
+      const citationKey = inside.substring(0, firstComma).trim();
+      const entryTags = {};
+      const fieldsStr = inside.substring(firstComma + 1).trim();
+      
+      let currentKey = '';
+      let currentValue = '';
+      let inKey = true;
+      let inValue = false;
+      let braceDepth = 0;
+      let quoteDepth = 0;
+      
+      for (let i = 0; i < fieldsStr.length; i++) {
+        const char = fieldsStr[i];
+        
+        if (inKey) {
+          if (char === '=') {
+            inKey = false;
+            inValue = true;
+          } else if (char !== ' ' && char !== '\n' && char !== '\r' && char !== '\t') {
+            currentKey += char;
+          }
+        } else if (inValue) {
+          if (char === '{') braceDepth++;
+          if (char === '}') braceDepth--;
+          if (char === '"') quoteDepth = quoteDepth === 0 ? 1 : 0;
+          
+          if (char === ',' && braceDepth === 0 && quoteDepth === 0) {
+            if (currentKey) {
+              entryTags[currentKey.trim().toLowerCase()] = currentValue.trim().replace(/^\{|^"|"$/g, '').replace(/\}$/, '');
+            }
+            currentKey = '';
+            currentValue = '';
+            inKey = true;
+            inValue = false;
+          } else {
+            currentValue += char;
+          }
+        }
+      }
+      if (currentKey && currentValue) {
+         entryTags[currentKey.trim().toLowerCase()] = currentValue.trim().replace(/^\{|^"|"$/g, '').replace(/\}$/, '');
+      }
+      
+      entries.push({ entryType, citationKey, entryTags });
+    }
+    return entries;
+  }
+
+  // ============ BIBTEX RENDERING ============
+function renderPublications(currentFilter = 'all') {
+    const bibtexRaw = document.getElementById('bibtex-data').textContent;
+    const pubListElement = document.getElementById('dynamic-pub-list');
+    
+    let parsedData = [];
+    try {
+      parsedData = parseBibTeX(bibtexRaw);
+    } catch (e) {
+      console.error("Error parsing BibTeX:", e);
+      pubListElement.innerHTML = '<li>Error loading publications. Check console for details.</li>';
+      return;
+    }
+
+    // ---> ADD THIS NEW FILTERING LOGIC <---
+    if (currentFilter !== 'all') {
+      parsedData = parsedData.filter(entry => {
+        // Look at the keywords we added to the BibTeX
+        const keywords = entry.entryTags.keywords ? entry.entryTags.keywords.toLowerCase() : '';
+        return keywords.includes(currentFilter);
+      });
+    }
+
+    // Sort descending by year
+    parsedData.sort((a, b) => {
+      const yearA = parseInt(a.entryTags.year) || 0;
+      const yearB = parseInt(b.entryTags.year) || 0;
+      return yearB - yearA;
+    });
+
+    pubListElement.innerHTML = ''; // Clear the list
+    // ADD THIS TRACKER VARIABLE
+    let lastSeenYear = null;
+    parsedData.forEach(entry => {
+      const tags = entry.entryTags;
+      
+      // Clean up curly braces from titles
+      const title = tags.title ? tags.title.replace(/[{}]/g, '') : 'Untitled Publication';
+      
+      // Format authors: Replace " and " with commas, and bold Anna's name
+      let authors = tags.author ? tags.author.replace(/\s+and\s+/gi, ', ') : 'Unknown Authors';
+      // authors = authors.replace(/(A\.\s*Kashkanova|Kashkanova,\s*A\.|Anna D\.\s*Kashkanova)/gi, '<b>$&</b>');
+
+      const year = tags.year || 'N/A';
+      let displayYear = "";
+      if (year !== lastSeenYear) {
+        displayYear = year;
+        lastSeenYear = year;
+      }
+      // Format Journal Info (e.g., "ACS Nano, 19(10):10173-10179")
+      const journalName = tags.journal || tags.booktitle || 'Preprint / Other';
+      let journalMeta = journalName;
+      if (tags.volume) {
+        journalMeta += `, ${tags.volume}`;
+        if (tags.number) journalMeta += `(${tags.number})`;
+      }
+      if (tags.pages) {
+        journalMeta += `:${tags.pages.replace('--', '–')}`; // En-dash for pages
+      }
+
+      // Generate Links
+      let linksHTML = '';
+      if (tags.doi) {
+        // Strip common URL prefixes if people accidentally included them in the DOI field
+        const cleanDoi = tags.doi.replace(/https?:\/\/(dx\.)?doi\.org\//, '');
+        linksHTML += `<a href="https://doi.org/${cleanDoi}" target="_blank" rel="noopener">DOI →</a>`;
+      }
+      if (tags.url) {
+        linksHTML += `<a href="${tags.url}" target="_blank" rel="noopener">Link</a>`;
+      }
+
+      // Construct the HTML for the item
+      const li = document.createElement('li');
+      li.className = 'pub';
+      li.innerHTML = `
+        <div class="year">${displayYear}</div>     <!-- CHANGE THIS VARIABLE -->
+        <div>
+          <div class="pub-title">${title}</div>
+          <div class="pub-authors">${authors}</div>
+          <div class="pub-journal">${journalMeta}</div>
+          <div class="pub-links">${linksHTML}</div>
+        </div>
+      `;
+      
+      pubListElement.appendChild(li);
+    });
+  }
+
+  // Run the render function
+  renderPublications();
+
+
+  // ============ EXISTING PAGE NAVIGATION LOGIC ============
+  const links = document.querySelectorAll('[data-page]');
+  const pages = document.querySelectorAll('.page');
+  const navLinks = document.querySelectorAll('ul.navlinks a');
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navList = document.querySelector('ul.navlinks');
+
+  menuToggle.addEventListener('click', () => {
+    navList.classList.toggle('open');
+  });
+
+  function showPage(pageId) {
+    pages.forEach(p => p.classList.toggle('active', p.id === pageId));
+    navLinks.forEach(a => a.classList.toggle('active', a.dataset.page === pageId));
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  links.forEach(el => {
+    el.addEventListener('click', e => {
+      const target = el.dataset.page;
+      if (target) {
+        e.preventDefault();
+        showPage(target);
+        navList.classList.remove('open'); // Auto-close menu when clicking a link
+      }
+    });
+  });
+
+  document.querySelectorAll('.filter').forEach(f => {
+    f.addEventListener('click', () => {
+      // Highlight the clicked button
+      document.querySelectorAll('.filter').forEach(x => x.classList.remove('active'));
+      f.classList.add('active');
+      
+      // Get the text of the button (e.g. "iNTA", "Methods") and make it lowercase
+      const filterWord = f.textContent.trim().toLowerCase();
+      
+      // Redraw the publications list using only that word
+      renderPublications(filterWord);
+    });
+  });
+
+  function syncLatelyWithNews() {
+  const newsItems = document.querySelectorAll('.news-item');
+  const latelyContainer = document.getElementById('lately-container');
+  
+  if (!newsItems.length || !latelyContainer) return;
+
+  // Clear existing content
+  latelyContainer.innerHTML = '';
+
+  // Take the first 2 items from the News feed
+  const topNews = Array.from(newsItems).slice(0, 2);
+
+  topNews.forEach(item => {
+    const date = item.querySelector('.news-date').innerText;
+    const title = item.querySelector('h3').innerText;
+    const description = item.querySelector('p').innerText;
+
+    // Create the "Lately" item structure
+    const recentItem = document.createElement('div');
+    recentItem.className = 'recent-item';
+    recentItem.innerHTML = `
+      <div class="date">${date}</div>
+      <h4>${title}</h4>
+      <p>${description}</p>
+    `;
+    latelyContainer.appendChild(recentItem);
+  });
+}
+syncLatelyWithNews();
+</script>
+
+</body>
+</html>
